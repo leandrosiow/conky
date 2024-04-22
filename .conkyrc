@@ -1,75 +1,63 @@
-background yes
-use_xft yes
-xftfont 123:size=10
-xftalpha 0.1
-update_interval 0.5
-total_run_times 0
-own_window yes
-own_window_type normal
-own_window_transparent no
-own_window_hints undecorated,below,sticky,skip_taskbar,skip_pager
-double_buffer yes
-minimum_size 250 5
-maximum_width 500
-draw_shades no
-draw_outline no
-draw_borders no
-draw_graph_borders no
-default_color white
-default_shade_color red
-default_outline_color green
-alignment middle_right
-gap_x 100
-gap_y 0
-no_buffers yes
-uppercase no
-cpu_avg_samples 2
-net_avg_samples 1
-override_utf8_locale no
-use_spacer right
+conky.config = {
+  use_spacer = 'left',
+  pad_percents = 3,
+  background = true,
+  double_buffer = true,
+  default_color = 'cornflowerblue',
+  font = 'DejaVu Sans Mono:size=10',
+  use_xft = true,
+  alignment = 'top_right',
+  gap_x = 10,
+  gap_y = 40,
+  own_window_argb_visual = false,
+  own_window_argb_value = 0,
+  own_window_type = 'normal',
+  own_window_hints = 'undecorated,below,skip_taskbar,skip_pager,sticky',
+  own_window = true,
+  own_window_transparent = true,
+  xftalpha= 0.8,
+  update_interval = 1.0,
+}
 
-TEXT
-${font Arial:size=15}${color Tan1}RPI${color Ivory}LINUX
+conky.text = [[
+${color #0077ff}Hostname: ${color}${nodename}
+${color #0077ff}Kernel:   ${color}${sysname} ${kernel} on ${machine}
+${color #0077ff}Uptime:   ${color}${uptime}
+${hr}
+${color #0077ff}CPU:${color} ${freq_g} GHz  Temp:${acpitemp}
+${color #0077ff}1: ${cpu cpu1}% ${cpubar cpu1}
+${color #0077ff}2: ${cpu cpu2}% ${cpubar cpu2}
+${color #0077ff}3: ${cpu cpu3}% ${cpubar cpu3}
+${color #0077ff}4: ${cpu cpu4}% ${cpubar cpu4}
+${hr}
+${color #0077ff}Name              PID   CPU%   MEM%
+${color lightgrey} ${top name 1} ${top pid 1} ${top cpu 1} ${top mem 1}
+${color lightgrey} ${top name 2} ${top pid 2} ${top cpu 2} ${top mem 2}
+${color lightgrey} ${top name 3} ${top pid 3} ${top cpu 3} ${top mem 3}
+${color lightgrey} ${top name 4} ${top pid 4} ${top cpu 4} ${top mem 4}
+${color #0077ff}Load average: ${color}${loadavg}
+${color #0077ff}Processes: ${color}${processes} \
+${color #0077ff}Running:${color} ${running_processes}
+${hr}
+${color #0077ff}RAM:  ${color}${mem}/${memmax}
+${memperc}% ${membar 4}
+${color #0077ff}Swap: ${color}${swap}/${swapmax}
+${swapperc}% ${swapbar 4}
+${memgraph}
+${hr}
+${color #0077ff}${color}${fs_used /}/${fs_size /} ${fs_bar 6 /}
+${hr}
+${color #0077ff}Port(s)${alignr}Connections
+${color}Inbound: ${tcp_portmon 1 32767 count}  Outbound: ${tcp_portmon 32768 61000 count}${alignr}ALL: ${tcp_portmon 1 65535 count}
+${color #0077ff}IP Address (wlan0): ${if_up wlan0} ${addr wlan0} ${else}Network Disconnected.${endif}
+${color #0077ff}IP Address (eth0): ${if_up eth0} ${addr eth0} ${else}Network Disconnected.${endif}
+${color red}Up:   ${color}${upspeed wlan0}
+${color green}Down: ${color}${downspeed wlan0}
 
-
-${voffset -90}
-${color DimGray}
-${font}
-${font Arial:bold:size=8}${color Tan1}SYSTEM ${color DarkSlateGray} ${hr 2}
-$font${color DimGray}$sysname $kernel $alignr $machine
-Frequency $alignr${freq_g cpu0}Ghz
-Uptime $alignr${uptime}
-File System $alignr${fs_type}
-
-${font Arial:bold:size=8}${color Tan2}NETWORK ${color DarkSlateGray}${hr 2}
-$font${color DimGray}IP Address on wlan0: ${if_existing /proc/net/route wlan0} ${addr wlan0} ${else}Network Disconnected.${endif}
-$font${color DimGray}IP Address on eth0: ${if_existing /porc/net/route eth0} ${addr eth0} ${else}Network Disconnected.${endif}
-External IP: ${exec curl -s www.icanhazip.com}
-
-Down $alignr ${downspeed wlan0} kb/s
-Up $alignr ${upspeed wlan0} kb/s
-
-Downloaded: $alignr  ${totaldown wlan0}
-Uploaded: $alignr  ${totalup wlan0}
-${font Arial:bold:size=8}${color Tan1}CPU ${color DarkSlateGray}${hr 2}
-$font${color DimGray}Temp: $alignr ${exec /opt/vc/bin/vcgencmd measure_temp | cut -c6-9} C
-$font${color DimGray}CPU1  ${cpu cpu1}% ${cpubar cpu1}
-CPU2  ${cpu cpu2}% ${cpubar cpu2}
-CPU3  ${cpu cpu3}% ${cpubar cpu3}
-CPU4  ${cpu cpu4}% ${cpubar cpu4}
-${cpugraph DimGray DarkSlateGray} $color
-${font Arial:bold:size=8}${color Tan1}MEMORY ${color DarkSlateGray}${hr 2}
-$font${color DimGray}MEM $alignc $mem / $memmax $alignr $memperc%
-$membar
-$font${color DimGray}SWAP $alignc $swap / $swapmax $alignr $swapperc%
-$swapbar
-
-${font Arial:bold:size=8}${color Tan1}HDD ${color DarkSlateGray}${hr 2}
-$font${color DimGray}/home $alignc ${fs_used /home} / ${fs_size /home} $alignr ${fs_free_perc /home}%
-${fs_bar /home}
-
-${font Arial:bold:size=8}${color Tan1}TOP PROCESSES ${color DarkSlateGray}${hr 2}
-${color DimGray}$font${top_mem name 2}${alignr}${top mem 2} %
-$font${top_mem name 3}${alignr}${top mem 3} %
-$font${top_mem name 4}${alignr}${top mem 4} %
-$font${top_mem name 5}${alignr}${top mem 5} %
+${color #0077ff}Inbound Connection ${alignr}Port${color}
+${tcp_portmon 1 32767 rhost 0} ${alignr} ${tcp_portmon 1 32767 lservice 0}
+${tcp_portmon 1 32767 rhost 1} ${alignr} ${tcp_portmon 1 32767 lservice 1}
+${tcp_portmon 1 32767 rhost 2} ${alignr} ${tcp_portmon 1 32767 lservice 2}
+${tcp_portmon 1 32767 rhost 3} ${alignr} ${tcp_portmon 1 32767 lservice 3}
+${tcp_portmon 1 32767 rhost 4} ${alignr} ${tcp_portmon 1 32767 lservice 4}
+]]
